@@ -2,7 +2,7 @@
 
 A TMX Map parser for Tiled map engine written in C#.
 
-## Goal of library:
+## Goal of Library:
 
 * Easy to use
 * Use Classes to eliminate the possibility of accidental struct copies
@@ -21,6 +21,34 @@ A TMX Map parser for Tiled map engine written in C#.
 
 * MIT (see LICENSE.md)
 
+## Features Supported:
+
+* Multiple Tile Layers
+* Multiple Tile Sets
+* Sanity checks on data
+* Base64 + zlib/gzip/or no compression
+* CSV format
+* XML format
+* Method for providing a different location for the tile images (instead of the one the map editor was given)
+
+## Features Not Yet Supported:
+
+* Properties
+* Isometric (I have only attempted orthogonal)
+* Object layers
+* Flags on tiles.  They get dropped and the tile id is corrected.  Horizontal, vertical, and diagonal flipping is parsed but no indication is given on the output model.
+* Using the path that the map editor gave for each tileset instead of different location provided.
+* Needs commenting and refactoring of the code.
+* Persisting map data back to a .tmx file
+
+## External Links:
+
+Tiled github page - https://github.com/bjorn/tiled
+
+Tiled home page - http://www.mapeditor.org/
+
+List of supported parsers - https://github.com/bjorn/tiled/wiki/Support-for-TMX-maps
+
 ## Getting Started:
 
 	// First parameter is the tmx file output by Tiled.
@@ -33,7 +61,7 @@ A TMX Map parser for Tiled map engine written in C#.
 
 	// This is straight out of a game I'm working on.
 	// I used it to verify this library is working correctly.
-	// You would obviously need OpenTK and the write your own TextureLoader
+	// You would obviously need OpenTK and to write your own TextureLoader
 	
     internal class MapRenderer
     {

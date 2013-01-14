@@ -9,17 +9,20 @@ using zlib;
 
 namespace TmxCSharp.Loader
 {
+    /// <summary>
+    /// Used to load .tmx files that were created with Tiled.
+    /// </summary>
     public static class TmxLoader
     {
-        public static TileMap Parse(string fileName, string imagePath)
+        public static TileMap Parse(string fileName)
         {
             using (Stream stream = File.OpenRead(fileName))
             {
-                return Parse(XDocument.Load(stream), imagePath);
+                return Parse(XDocument.Load(stream));
             }
         }
 
-        public static TileMap Parse(XDocument document, string imagePath)
+        public static TileMap Parse(XDocument document)
         {
             XElement map = document.Element("map");
 
@@ -34,7 +37,7 @@ namespace TmxCSharp.Loader
 
             IEnumerable<XElement> tileSetDefinitions = map.Elements("tileset");
 
-            IList<TileSet> tileSets = LoadTileSets(tileSetDefinitions, imagePath);
+            IList<TileSet> tileSets = LoadTileSets(tileSetDefinitions);
 
             IEnumerable<XElement> mapLayerDefinitions = map.Elements("layer");
 
@@ -250,7 +253,7 @@ namespace TmxCSharp.Loader
             output.Flush();
         }
 
-        private static IList<TileSet> LoadTileSets(IEnumerable<XElement> tileSetDefinitions, string imagePath)
+        private static IList<TileSet> LoadTileSets(IEnumerable<XElement> tileSetDefinitions)
         {
             IList<TileSet> tileSets = new List<TileSet>();
 
@@ -263,7 +266,7 @@ namespace TmxCSharp.Loader
                     throw new InvalidDataException("Tile set missing image");
                 }
 
-                TileSetImage tileSetImage = new TileSetImage(Path.Combine(imagePath, Path.GetFileName((string) image.Attribute("source"))),
+                TileSetImage tileSetImage = new TileSetImage((string) image.Attribute("source"),
                                                              (int) image.Attribute("width"), (int) image.Attribute("height"));
 
                 TileSet tileSet = new TileSet((int) tileSetDefinition.Attribute("firstgid"),
