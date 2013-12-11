@@ -10,8 +10,19 @@ namespace TmxCSharp.Loader
         {
             const int bufferSize = 4096;
 
-            input.CopyTo(output, bufferSize);
+            // NOTE: cannot use this due to ZLib
+            // bug with output stream always reporting false for CanWrite
+            //input.CopyTo(output, bufferSize);
 
+            byte[] buffer = new byte[bufferSize];
+            
+            int count;
+
+            while ((count = input.Read(buffer, 0, buffer.Length)) != 0)
+            {
+                output.Write(buffer, 0, count);
+            }
+            
             output.Flush();
         }
 
@@ -44,7 +55,8 @@ namespace TmxCSharp.Loader
 
         private static void DecompressZLibData(byte[] inData, out byte[] outData)
         {
-            using (MemoryStream outMemoryStream = new MemoryStream())
+            // used to work.
+            using (MemoryStream outMemoryStream = new MemoryStream(1000000))
             {
                 using (ZOutputStream outZStream = new ZOutputStream(outMemoryStream))
                 {

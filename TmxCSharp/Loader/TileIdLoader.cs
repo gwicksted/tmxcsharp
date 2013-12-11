@@ -78,9 +78,9 @@ namespace TmxCSharp.Loader
             {
                 for (int x = 0; x < _size.Width; x++)
                 {
-                    layer.TileIds[y, x] = enumerator.Current;
-
                     enumerator.MoveNext();
+
+                    layer.TileIds[y, x] = enumerator.Current;
                 }
             }
         }
